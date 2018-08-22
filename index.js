@@ -1,10 +1,11 @@
 'use strict';
 
-var fs = require("fs")
-var path = require('path')
+var fs = require('fs');
+var path = require('path');
 var loaderUtils = require('loader-utils');
 var elmCompiler = require('node-elm-compiler');
 var yargs = require('yargs');
+var findElmDependencies = require('./find-elm-dependencies');
 
 var runningInstances = 0;
 var alreadyCompiledFiles = [];
@@ -95,7 +96,7 @@ var dependenciesFor = function(resourcePath, files) {
 
 var findAllDependencies = function(files) {
   return Promise.all(files.map(
-    function(f) { return elmCompiler.findAllDependencies(f) }
+    function(f) { return findElmDependencies.findAllDependencies(f) }
   ))
   .then(flatten);
 }
